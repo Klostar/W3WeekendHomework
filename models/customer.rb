@@ -20,6 +20,18 @@ class Customer
 
   end
 
+  def update()
+    sql = "UPDATE customers SET name = $1, funds = $2 WHERE id =$3"
+    values =[@name,@funds,@id]
+    SqlRunner.run(sql,values)
+  end
+
+  def delete()
+    sql = "DELETE FROM customers WHERE id = $1"
+    values =[@id]
+    SqlRunner.run(sql,values)
+  end
+
   def films()
     sql = " SELECT films.*
             FROM films
@@ -30,6 +42,10 @@ class Customer
     films = SqlRunner.run(sql,values)
     result = films.map{|film| Film.new(film)}
     return result
+  end
+
+  def pay(ticket_price)
+    @funds -= ticket_price
   end
 
 def self.all()
