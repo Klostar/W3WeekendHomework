@@ -44,6 +44,19 @@ class Customer
     return result
   end
 
+
+  def films_ticket()
+    sql = " SELECT films.*
+            FROM films
+            INNER JOIN tickets
+            ON tickets.film_id = films.id
+            WHERE tickets.customer_id = $1"
+    values =[@id]
+    films = SqlRunner.run(sql,values)
+    result = films.map{|film| Film.new(film)}.size
+    return result
+  end
+
   def pay(ticket_price)
     @funds -= ticket_price
   end
